@@ -1,0 +1,163 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+entity Player {
+    * player_id: int unsigned <<generated>>
+    --
+    * player_name: varchar(255)
+    * authority_code: varchar(255)
+}
+
+entity Game {
+    * game_id: int unsigned <<generated>>
+    --
+    * game_name: varchar(255)
+}
+
+entity GamePlayer {
+    * game_player_id: int unsigned <<generated>>
+    --
+    * game_id: int unsigned <<foreign key>>
+    * player_id: int unsigned <<foreign key>>
+    * game_player_name: varchar(255),
+    * chara_id: int unsigned <<foreign key>>
+    * is_deleted: boolean
+}
+
+Player ||-o{ GamePlayer
+Game ||-o{ GamePlayer
+
+entity GameSetting {
+    * game_setting_id: int unsigned <<generated>>
+    --
+    * game_id: int unsigned <<foreign key>>
+    * game_setting_item_code varchar(255)
+    * game_setting_item_value varchar(1000)
+}
+
+Game ||-|{ GameSetting
+
+entity GamePeriod {
+    * game_period_id: int unsigned <<generated>>
+    --
+    * game_id: int unsigned
+    * period: int unsigned
+    prefix: varchar(255)
+    suffix: varchar(255)
+}
+
+Game ||-|{ GamePeriod
+
+entity Designer {
+    * designer_id: int unsigned <<generated>>
+    --
+    * designer_name: varchar(255)
+}
+
+entity Charachip {
+    * charachip_id: int unsigned <<generated>>
+    --
+    * charachip_name: varchar(255)
+    * designer_id: int unsigned <<foreign key>>
+}
+
+Designer ||-|{ Charachip
+
+entity Chara {
+    * chara_id: int unsigned <<generated>>
+    --
+    * chara_name: varchar(255)
+    * chara_short_name: char(1)
+    * charachip_id: int unsigned <<foreign key>>
+    * display_width: int unsigned
+    * display_height: int unsigned
+}
+
+Chara }|-|| Charachip
+
+entity CharaImage {
+    * chara_image_id: int unsigned <<generated>>
+    --
+    * chara_id: int unsigned <<foreign key>>
+    * face_type_code: varchar(255)
+    * chara_img_url: varchar(1000)
+}
+
+entity Message {
+    * message_id: bigint <<generated>>
+    --
+    * game_id: int unsigned <<foreign key>>
+    * message_type_code: varchar(255)
+    * game_period_id: int unsigned <<foreign key>>
+    from_game_player_id: int unsigned <<foreign key>>
+    from_game_player_name: varchar(255)
+    from_game_player_face_type_code: varchar(255)
+    * message_content: varchar(10000)
+    message_number: int unsigned
+    * message_datetime: datetime
+    * message_unix_timestamp_milli: bigint unsigned
+    * is_deleted: boolean
+    * is_convert_disable: boolean
+    * replied_count: int unsigned
+    * favored_count: int unsigned
+}
+
+Message }o-|| Game
+Message }o-|| GamePeriod
+Message }o-|| GamePlayer
+
+entity MessageReply {
+    * message_reply_id: bigint <<generated>>
+    --
+    * from_message_id: bigint <<foreign key>>
+    * reply_message_id: bigint <<foreign key>>
+}
+
+MessageReply }o-|| Message
+
+entity MessageFavorite {
+    * message_favorite_id: bigint <<generated>>
+    --
+    * message_id: bigint <<foreign key>>
+    * game_player_id: int unsigned <<foreign key>>
+}
+
+MessageFavorite }o-|| Message
+MessageFavorite }o-|| GamePlayer
+
+entity GamePlayerGroup {
+    * game_player_group_id: int unsigned <<generated>>
+}
+
+entity GamePlayerGroupRel {
+    * game_player_group_rel_id: int unsigned <<generated>>
+    --
+    * game_player_group_id: int unsigned <<foreign key>>
+    * game_player_id: int unsigned <<foreign key>>
+}
+
+GamePlayerGroupRel }|-|| GamePlayerGroup
+
+entity DirectMessage {
+    * direct_message_id: bigint <<generated>>
+    --
+    * game_id: int unsigned <<foreign key>>
+    * game_player_group_id: int unsigned <<foreign key>>
+    * game_period_id: int unsigned <<foreign key>>
+    from_game_player_id: int unsigned <<foreign key>>
+    from_game_player_name: varchar(255)
+    from_game_player_face_type_code: varchar(255)
+    * message_content: varchar(10000)
+    message_number: int unsigned
+    * message_datetime: datetime
+    * message_unix_timestamp_milli: bigint unsigned
+    * is_deleted: boolean
+    * is_convert_disable: boolean
+}
+
+DirectMessage }o-|| Game
+DirectMessage }o-|| GamePlayerGroup
+DirectMessage }o-|| GamePeriod
+DirectMessage }o-|| GamePlayer
+
+@enduml

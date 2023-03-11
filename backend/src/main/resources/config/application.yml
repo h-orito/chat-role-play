@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/chatrpdb?character_set_server=utf8mb4
+    username: chatrp
+    password: password
+    driverClassName: com.mysql.jdbc.Driver
+  thymeleaf:
+    cache: false
+    mode: HTML
+  messages:
+    basename: messages
+    cache-seconds: -1
+    encoding: UTF-8
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH_ISSUER_URI}
+          audiences: ${OAUTH_AUDIENCE}
+
+security:
+  corsClientUrls:
+    - http://localhost:3000
+
+server:
+  servlet:
+    contextPath: /chat-role-play
+    session:
+      timeout: 86400
+  port: 8091
+
+logging:
+  level:
+    org.springframework: INFO
+    root: INFO
+    org.seasar.dbflute: ERROR
+  file.name: /var/log/chat-role-play/tomcat.log
+
+app:
+  debug: true
+

@@ -1,0 +1,93 @@
+# /---------------------------------------------------------------------------
+# additionalForeignKeyMap: (NotRequired - Default map:{})
+#
+# If foreign key does not exist in your database,
+# you can set up here as virtual foreign key for DBFlute.
+#
+# And it's one-to-one relation if you add one fixed condition to referrer table, 
+# you can set virtual foreign key with fixedCondition and fixedSuffix.
+# And you can use it to view objects too.
+#
+# If local column name is same as foreign column name,
+# you can omit the setting of localColumnName and foreignColumnName.
+# The names are treated as case insensitive.
+#
+# Example:
+# map:{
+#     ; FK_MEMBER_MEMBER_STATUS_CODE = map:{
+#         ; localTableName  = MEMBER             ; foreignTableName  = MEMBER_STATUS
+#         ; localColumnName = MEMBER_STATUS_CODE ; foreignColumnName = MEMBER_STATUS_CODE
+#     }
+#     ; FK_PURCHASE_MEMBER_ID = map:{
+#         ; localTableName  = PURCHASE  ; foreignTableName  = MEMBER
+#     }
+#     ; FK_MEMBER_MEMBER_ADDRESS_VALID = map:{
+#         ; localTableName  = MEMBER    ; foreignTableName  = MEMBER_ADDRESS
+#         ; localColumnName = MEMBER_ID ; foreignColumnName = MEMBER_ID
+#         ; fixedCondition = 
+#          $$foreignAlias$$.VALID_BEGIN_DATE <= /*targetDate(Date)*/null
+#      and $$foreignAlias$$.VALID_END_DATE >= /*targetDate(Date)*/null 
+#         ; fixedSuffix = AsValid
+#     }
+# }
+#
+# *The line that starts with '#' means comment-out.
+#
+map:{
+    ; fk_message_game = map:{
+        ; localTableName  = message ; foreignTableName  = game
+        ; localColumnName = game_id ; foreignColumnName = game_id
+    }
+    ; fk_message_game_period = map:{
+        ; localTableName  = message        ; foreignTableName  = game_period
+        ; localColumnName = game_period_id ; foreignColumnName = game_period_id
+    }
+    ; fk_message_game_player = map:{
+        ; localTableName  = message             ; foreignTableName  = game_player
+        ; localColumnName = from_game_player_id ; foreignColumnName = game_player_id
+    }
+
+    ; fk_message_reply_game = map:{
+        ; localTableName  = message_reply ; foreignTableName  = game
+        ; localColumnName = game_id       ; foreignColumnName = game_id
+    }
+    ; fk_message_reply_from_message = map:{
+        ; localTableName  = message_reply   ; foreignTableName  = message
+        ; localColumnName = from_message_id ; foreignColumnName = message_id
+    }
+    ; fk_message_reply_reply_message = map:{
+        ; localTableName  = message_reply    ; foreignTableName  = message
+        ; localColumnName = reply_message_id ; foreignColumnName = message_id
+    }
+
+    ; fk_message_favorite_game = map:{
+        ; localTableName  = message_favorite ; foreignTableName  = game
+        ; localColumnName = game_id          ; foreignColumnName = game_id
+    }
+    ; fk_message_favorite_message = map:{
+        ; localTableName  = message_favorite ; foreignTableName  = message
+        ; localColumnName = message_id       ; foreignColumnName = message_id
+    }
+    ; fk_message_favorite_game_player = map:{
+        ; localTableName  = message_favorite ; foreignTableName  = game_player
+        ; localColumnName = game_player_id   ; foreignColumnName = game_player_id
+    }
+
+    ; fk_direct_message_game = map:{
+        ; localTableName  = direct_message ; foreignTableName  = game
+        ; localColumnName = game_id        ; foreignColumnName = game_id
+    }
+    ; fk_direct_message_game_player_group = map:{
+        ; localTableName  = direct_message       ; foreignTableName  = game_player_group
+        ; localColumnName = game_player_group_id ; foreignColumnName = game_player_group_id
+    }
+    ; fk_direct_message_game_period = map:{
+        ; localTableName  = direct_message ; foreignTableName  = game_period
+        ; localColumnName = game_period_id ; foreignColumnName = game_period_id
+    }
+    ; fk_direct_message_from_game_player = map:{
+        ; localTableName  = direct_message      ; foreignTableName  = game_player
+        ; localColumnName = from_game_player_id ; foreignColumnName = game_player_id
+    }
+}
+# ----------------/
